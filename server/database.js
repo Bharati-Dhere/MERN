@@ -1,16 +1,17 @@
-const mongoose=require('mongoose');
-require('dotenv').config(); // Load .env file
+const mongoose = require('mongoose');
 
-const databaseConnection=async()=>{
-  await mongoose.connect('mongodb://localhost:27017/book')
-  .then(()=>{
-     console.log("hey database connected");
-     
-  })
-  .catch((error)=>{
-    console.log(error);
-    
-  })
-}
+const databaseConnection = async () => {
+  const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/book';
 
-module.exports=databaseConnection;
+  try {
+    await mongoose.connect(mongoURI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("Hey, database connected successfully!");
+  } catch (error) {
+    console.error("Database connection error:", error);
+  }
+};
+
+module.exports = databaseConnection;
